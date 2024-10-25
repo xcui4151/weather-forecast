@@ -1,26 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Search from './components/Search';
+import Weather from './components/Weather';
+import { useFetchWeather } from './hooks/useFetchWeather';
 
-function App() {
+const App: React.FC = () => {
+  const { weatherData, fetchWeather, loading, error } = useFetchWeather();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Weather App (Today’s 3-Hour Forecast + 7-Day Forecast)</h1>
+      <Search onSearch={fetchWeather} />
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {weatherData && <Weather weatherData={weatherData} />}
     </div>
   );
-}
+};
 
 export default App;
