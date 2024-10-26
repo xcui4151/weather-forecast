@@ -1,19 +1,24 @@
-import React from 'react';
-import Search from './components/Search';
-import Weather from './components/Weather';
-import { useFetchWeather } from './hooks/useFetchWeather';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Home from "./pages/Home";
+import { useAuth } from "./hooks/useAuth";
 
 const App: React.FC = () => {
-  const { weatherData, fetchWeather, loading, error } = useFetchWeather();
+  const currentUser = useAuth();
 
   return (
-    <div>
-      <h1>Weather App (Today’s 3-Hour Forecast + 7-Day Forecast)</h1>
-      <Search onSearch={fetchWeather} />
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-      {weatherData && <Weather weatherData={weatherData} />}
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={currentUser ? <Home /> : <Navigate to="/login" />}
+        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
   );
 };
 
