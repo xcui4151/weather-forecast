@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../services/authService';
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -12,7 +14,7 @@ const Login: React.FC = () => {
 
     try {
       const user = await login(email, password);
-      alert(`Welcome, ${user.displayName || user.email}!`);
+      navigate('/');
     } catch (err: any) {
       // Display error if email is unverified
       setError(err.message);
